@@ -116,53 +116,51 @@ const PokemonList = () => {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="container py-5 px-10">
-      <div className="pokemon-wrapper flex flex-col gap-5 items-center">
-        <PokemonTitle
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          selectedType={selectedType}
-          setSelectedType={setSelectedType}
-          pokemonTypes={pokemonTypes}
-        />
-        {loading ? (
-          <div className="relative flex justify-center items-center h-40">
-            <img
-              src={Pokeball}
-              alt="Loading..."
-              className="w-20 h-20 animate-smoothBounce"
-            />
-            <div className="absolute bottom-2 w-20 h-4 bg-black rounded-full blur-md opacity-30 animate-shadowPulse"></div>
-          </div>
-        ) : (
-          <>
-            <PokemonGrid
-              pokemons={displayedPokemons}
-              onPokemonClick={openPokemonDetail}
-            />
+    <div className="pokemon-wrapper py-5 px-10 flex flex-col gap-5 items-center">
+      <PokemonTitle
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        selectedType={selectedType}
+        setSelectedType={setSelectedType}
+        pokemonTypes={pokemonTypes}
+      />
+      {loading ? (
+        <div className="relative flex justify-center items-center h-40">
+          <img
+            src={Pokeball}
+            alt="Loading..."
+            className="w-20 h-20 animate-smoothBounce"
+          />
+          <div className="absolute bottom-2 w-20 h-4 bg-black rounded-full blur-md opacity-30 animate-shadowPulse"></div>
+        </div>
+      ) : (
+        <>
+          <PokemonGrid
+            pokemons={displayedPokemons}
+            onPokemonClick={openPokemonDetail}
+          />
 
-            <ReactPaginate
-              breakLabel="..."
-              nextLabel="Next"
-              previousLabel="Prev"
-              pageRangeDisplayed={3}
-              marginPagesDisplayed={2}
-              pageCount={pageCount}
-              onPageChange={(e) => setCurrentPage(e.selected)}
-              containerClassName="flex justify-center space-x-2"
-              pageClassName="bg-gray-700 text-white px-3 py-1 rounded-full"
-              previousClassName="bg-red-500 text-white px-3 py-1 rounded-lg"
-              nextClassName="bg-red-500 text-white px-3 py-1 rounded-lg"
-              activeClassName="bg-gray-900"
-            />
-          </>
-        )}
-        
-        <PokemonDetailStats
-          pokemon={selectedPokemonDetail}
-          onClose={closePokemonDetail}
-        />
-      </div>
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel="Next"
+            previousLabel="Prev"
+            pageRangeDisplayed={3}
+            marginPagesDisplayed={2}
+            pageCount={pageCount}
+            onPageChange={(e) => setCurrentPage(e.selected)}
+            containerClassName="flex justify-center space-x-2"
+            pageClassName="bg-gray-700 text-white px-3 py-1 rounded-full"
+            previousClassName="bg-red-500 text-white px-3 py-1 rounded-lg"
+            nextClassName="bg-red-500 text-white px-3 py-1 rounded-lg"
+            activeClassName="bg-gray-900"
+          />
+        </>
+      )}
+
+      <PokemonDetailStats
+        pokemon={selectedPokemonDetail}
+        onClose={closePokemonDetail}
+      />
     </div>
   );
 };

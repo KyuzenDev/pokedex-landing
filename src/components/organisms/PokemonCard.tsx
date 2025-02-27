@@ -25,11 +25,13 @@ const PokemonCard = ({
     </div>
     <div className="pokemon-card pt-10 flex flex-col gap-2">
       <div className="flex flex-col items-center">
-        <img
-          src={pokemon.image}
-          alt={pokemon.name}
-          className="w-40 h-40 transition-transform duration-500 ease-in-out hover:scale-110"
-        />
+        <div className="pokemon-image">
+          <img
+            src={pokemon.image}
+            alt={pokemon.name}
+            className="w-40 h-40 transition-transform duration-500 ease-in-out hover:scale-110"
+          />
+        </div>
         <h3 className="font-bold text-lg capitalize">{pokemon.name}</h3>
       </div>
       <PokemonStats

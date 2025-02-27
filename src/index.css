@@ -49,3 +49,10 @@ h1, h2, h3, h4, h5, h6 {
 #root, #__next {
   isolation: isolate;
 }
+
+.pokemon-image {
+  background-image: url(./assets/bg-pokeball.png);
+  background-repeat: unset;
+  background-size: cover;
+}
+

@@ -27,14 +27,17 @@ const PokemonList = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Membuka detail Pokémon yang dipilih
   const openPokemonDetail = (pokemon: PokemonData) => {
     setSelectedPokemonDetail(pokemon);
   };
 
+  // Menutup detail Pokémon
   const closePokemonDetail = () => {
     setSelectedPokemonDetail(null);
   };
 
+  // Mengambil data Pokémon dari API
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -76,6 +79,7 @@ const PokemonList = () => {
     setLoading(false);
   };
 
+  // Mengambil type Pokémon dari API
   const fetchPokemonTypes = async () => {
     try {
       const response = await fetch("https://pokeapi.co/api/v2/type");
@@ -91,6 +95,7 @@ const PokemonList = () => {
     fetchPokemonTypes();
   }, []);
 
+  // Memfilter Pokémon berdasarkan pencarian dan type yang dipilih
   useEffect(() => {
     let filtered = pokemons.filter((pokemon) =>
       pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -106,6 +111,7 @@ const PokemonList = () => {
     setCurrentPage(0);
   }, [searchTerm, selectedType, pokemons]);
 
+  // Memperbarui Pokémon yang ditampilkan berdasarkan halaman
   useEffect(() => {
     const offset = currentPage * ITEMS_PER_PAGE;
     setDisplayedPokemons(

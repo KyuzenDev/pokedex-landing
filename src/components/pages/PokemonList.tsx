@@ -73,7 +73,12 @@ const openPokemonDetail = (pokemon: PokemonData) => {
               abilities: details.abilities.map(
                 (abilities) => abilities.ability.name
               ),
+              held_items:
+                details.held_items.map((held_items) => held_items.item.name),
               weight: details.weight,
+              speed:
+                details.stats.find((s) => s.stat.name === "speed")?.base_stat ||
+                0,
             };
           })
         );

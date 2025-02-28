@@ -7,6 +7,7 @@ export interface Pokemon {
 
 export interface PokemonDetail {
   base_experience: number;
+  held_items: { item: { name: string} }[];
   sprites: {
     front_default: string;
   };
@@ -21,12 +22,14 @@ export interface PokemonData {
   name: string;
   image: string;
   types: string[];
+  speed: number;
   hp: number;
   attack: number;
   special_att: number;
   defense: number;
   special_deff: number;
   abilities: string[];
+  held_items: string[];
   weight: number;
 }
 
@@ -46,6 +49,8 @@ export const fetchPokemonDetail = async (name: string) => {
     types: response.data.types,
     stats: response.data.stats,
     abilities: response.data.abilities,
-    weight : response.data.weight,
+    held_items: response.data.held_items,
+    weight: response.data.weight,
+    speed: response.data.speed,
   };
 };

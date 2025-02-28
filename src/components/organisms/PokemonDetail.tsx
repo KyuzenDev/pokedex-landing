@@ -5,6 +5,7 @@ interface PokemonDetailProps {
   pokemon: {
     name: string;
     image: string;
+    speed: number;
     hp: number;
     attack: number;
     special_att: number;
@@ -12,6 +13,7 @@ interface PokemonDetailProps {
     special_deff: number;
     types: string[];
     abilities: string[];
+    held_items: string[];
     weight: number;
   } | null;
   onClose: () => void;
@@ -42,6 +44,7 @@ const PokemonDetail = ({ pokemon, onClose }: PokemonDetailProps) => {
 
           {/* Statistik Pokémon */}
           <PokemonStatsDetail
+          speed={pokemon.speed}
             hp={pokemon.hp}
             attack={pokemon.attack}
             special_att={pokemon.special_att}
@@ -49,6 +52,7 @@ const PokemonDetail = ({ pokemon, onClose }: PokemonDetailProps) => {
             special_deff={pokemon.special_deff}
             types={pokemon.types}
             abilities={pokemon.abilities}
+            held_items={pokemon.held_items}
             weight={pokemon.weight}
           />
         </div>

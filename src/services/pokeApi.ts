@@ -13,6 +13,7 @@ export interface PokemonDetail {
   types: { type: { name: string } }[];
   stats: { stat: { name: string }; base_stat: number }[];
   abilities: { ability: { name: string } }[];
+  weight: number;
 }
 
 export interface PokemonData {
@@ -22,8 +23,11 @@ export interface PokemonData {
   types: string[];
   hp: number;
   attack: number;
+  special_att: number;
   defense: number;
+  special_deff: number;
   abilities: string[];
+  weight: number;
 }
 
 const API_URL = "https://pokeapi.co/api/v2/pokemon";
@@ -42,5 +46,6 @@ export const fetchPokemonDetail = async (name: string) => {
     types: response.data.types,
     stats: response.data.stats,
     abilities: response.data.abilities,
+    weight : response.data.weight,
   };
 };

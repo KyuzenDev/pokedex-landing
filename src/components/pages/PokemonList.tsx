@@ -20,17 +20,17 @@ const PokemonList = () => {
   const [filteredPokemons, setFilteredPokemons] = useState<PokemonData[]>([]);
   const [displayedPokemons, setDisplayedPokemons] = useState<PokemonData[]>([]);
   const [pageCount, setPageCount] = useState(0);
-  const [selectedPokemonDetail, setSelectedPokemonDetail] =
-    useState<PokemonData | null>(null);
+  const [selectedPokemonDetail, setSelectedPokemonDetail] = useState<PokemonData | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   // Membuka detail Pokémon yang dipilih
-  const openPokemonDetail = (pokemon: PokemonData) => {
-    setSelectedPokemonDetail(pokemon);
-  };
+const openPokemonDetail = (pokemon: PokemonData) => {
+  console.log("Opening Pokemon Detail:", pokemon); // Cek isi datanya
+  setSelectedPokemonDetail(pokemon);
+};
 
   // Menutup detail Pokémon
   const closePokemonDetail = () => {
@@ -45,7 +45,7 @@ const PokemonList = () => {
       let allPokemons: PokemonData[] = [];
 
       for (let i = 0; i < totalPokemons; i += 100) {
-        const data = await fetchPokemons(100, i);
+        const data = await fetchPokemons(132, i);
         const detailedPokemons: PokemonData[] = await Promise.all(
           data.results.map(async (pokemon: Pokemon): Promise<PokemonData> => {
             const details: PokemonDetail = await fetchPokemonDetail(
@@ -56,14 +56,24 @@ const PokemonList = () => {
               name: pokemon.name,
               image: details.sprites.front_default,
               types: details.types.map((t) => t.type.name),
-              hp: details.stats.find((s) => s.stat.name === "hp")!.base_stat,
-              attack: details.stats.find((s) => s.stat.name === "attack")!
-                .base_stat,
-              defense: details.stats.find((s) => s.stat.name === "defense")!
-                .base_stat,
+              hp:
+                details.stats.find((s) => s.stat.name === "hp")?.base_stat || 0,
+              attack:
+                details.stats.find((s) => s.stat.name === "attack")
+                  ?.base_stat || 0,
+              special_att:
+                details.stats.find((s) => s.stat.name === "special-attack")
+                  ?.base_stat || 0,
+              defense:
+                details.stats.find((s) => s.stat.name === "defense")
+                  ?.base_stat || 0,
+              special_deff:
+                details.stats.find((s) => s.stat.name === "special-defense")
+                  ?.base_stat || 0,
               abilities: details.abilities.map(
                 (abilities) => abilities.ability.name
               ),
+              weight: details.weight,
             };
           })
         );
@@ -82,7 +92,7 @@ const PokemonList = () => {
   // Mengambil type Pokémon dari API
   const fetchPokemonTypes = async () => {
     try {
-      const response = await fetch("https://pokeapi.co/api/v2/type");
+      const response = await fetch("https://pokeapi.co/api/v2/type/");
       const data = await response.json();
       setPokemonTypes(data.results.map((type: PokemonData) => type.name));
     } catch (error) {

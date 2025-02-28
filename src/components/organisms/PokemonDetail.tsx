@@ -7,9 +7,12 @@ interface PokemonDetailProps {
     image: string;
     hp: number;
     attack: number;
+    special_att: number;
     defense: number;
+    special_deff: number;
     types: string[];
     abilities: string[];
+    weight: number;
   } | null;
   onClose: () => void;
 }
@@ -18,24 +21,35 @@ const PokemonDetail = ({ pokemon, onClose }: PokemonDetailProps) => {
   if (!pokemon) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-80 relative">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 animate-fadeIn">
+      <div className="bg-white p-6 rounded-lg shadow-2xl max-w-md w-full relative">
+        {/* Tombol Close */}
         <CloseButton onClick={onClose} />
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-col capitalize">
+
+        {/* Container Pokémon */}
+        <div className="flex flex-col items-center gap-4">
+          {/* Gambar & Nama */}
+          <div className="flex flex-col items-center">
             <img
               src={pokemon.image}
               alt={pokemon.name}
-              className="w-32 mx-auto"
+              className="w-36 h-36 object-contain shadow-md rounded-full"
             />
-            <h2 className="text-xl font-bold text-center">{pokemon.name}</h2>
+            <h2 className="text-2xl font-bold text-gray-800 capitalize mt-2">
+              {pokemon.name}
+            </h2>
           </div>
+
+          {/* Statistik Pokémon */}
           <PokemonStatsDetail
             hp={pokemon.hp}
             attack={pokemon.attack}
+            special_att={pokemon.special_att}
             defense={pokemon.defense}
+            special_deff={pokemon.special_deff}
             types={pokemon.types}
             abilities={pokemon.abilities}
+            weight={pokemon.weight}
           />
         </div>
       </div>

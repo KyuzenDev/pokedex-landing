@@ -45,7 +45,7 @@ const openPokemonDetail = (pokemon: PokemonData) => {
       let allPokemons: PokemonData[] = [];
 
       for (let i = 0; i < totalPokemons; i += 100) {
-        const data = await fetchPokemons(132, i);
+        const data = await fetchPokemons(100, i);
         const detailedPokemons: PokemonData[] = await Promise.all(
           data.results.map(async (pokemon: Pokemon): Promise<PokemonData> => {
             const details: PokemonDetail = await fetchPokemonDetail(

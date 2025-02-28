@@ -37,22 +37,23 @@ const PokemonStatsDetail = ({
 
         {/* Stats */}
         <div className="grid grid-cols-2 gap-x-6 gap-y-2">
-          <p className="font-semibold text-gray-700">Speed:</p>
-          <p className="text-gray-600">{speed}</p>
           <p className="font-semibold text-gray-700">HP:</p>
           <p className="text-gray-600">{hp}</p>
 
           <p className="font-semibold text-gray-700">Attack:</p>
           <p className="text-gray-600">{attack}</p>
 
-          <p className="font-semibold text-gray-700">Special Attack:</p>
-          <p className="text-gray-600">{special_att}</p>
-
           <p className="font-semibold text-gray-700">Defense:</p>
           <p className="text-gray-600">{defense}</p>
 
+          <p className="font-semibold text-gray-700">Special Attack:</p>
+          <p className="text-gray-600">{special_att}</p>
+
           <p className="font-semibold text-gray-700">Special Defense:</p>
           <p className="text-gray-600">{special_deff}</p>
+
+          <p className="font-semibold text-gray-700">Speed:</p>
+          <p className="text-gray-600">{speed}</p>
 
           <p className="font-semibold text-gray-700">Weight:</p>
           <p className="text-gray-600">{weight} kg</p>
@@ -87,9 +88,7 @@ const PokemonStatsDetail = ({
                 </span>
               ))
             ) : (
-              <span className="text-gray-500 text-sm italic">
-                Tidak ada
-              </span>
+              <span className="text-gray-500 text-sm italic">Tidak ada</span>
             )}
           </div>
         </div>

@@ -4,16 +4,11 @@ import PokemonAbilities from "../molecules/PokemonAbilities";
 import { PokemonData } from "../../services/pokeApi";
 
 const PokemonCard = ({
-  pokemon,
-  onClick,
+  pokemon
 }: {
   pokemon: PokemonData;
-  onClick: () => void;
 }) => (
-  <li
-    className="relative w-60 border-4 border-black p-4 cursor-pointer bg-gray-200 rounded-xl flex flex-col items-center transition-all transform hover:scale-90 hover:shadow-lg duration-500 ease-in-out"
-    onClick={onClick}
-  >
+  <li className="relative w-60 border-4 border-black p-4 cursor-pointer bg-gray-200 rounded-xl flex flex-col items-center transition-all transform hover:scale-90 hover:shadow-lg duration-500 ease-in-out">
     {" "}
     <span className="pokemon-exp absolute top-5 left-5 px-3 py-2 rounded-full bg-black text-white text-xs font-bold">
       {pokemon.base_experience}

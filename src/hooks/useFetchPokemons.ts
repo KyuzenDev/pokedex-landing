@@ -58,5 +58,4 @@ const useFetchPokemons = (limit = 1320, loadPages = 131) => {
   return { pokemons, loading, error, currentPage, setCurrentPage, loadPages };
 };
 
-
 export default useFetchPokemons;

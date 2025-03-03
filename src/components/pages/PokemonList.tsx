@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { PokemonData } from "../../services/pokeApi";
 import useFetchPokemons from "../../hooks/useFetchPokemons";
 import useFetchPokemonTypes from "../../hooks/useFetchPokemonTypes";
 import usePokemonFilter from "../../hooks/usePokemonFilter";
 import usePagination from "../../hooks/usePagination";
 import PokemonTitle from "../organisms/PokemonTitle";
-import PokemonDetailStats from "../organisms/PokemonDetail";
 import PokemonGrid from "../templates/PokemonGrid";
 import ReactPaginate from "react-paginate";
 import Pokeball from "../../assets/pokeball.png";
@@ -19,15 +17,6 @@ const PokemonList = () => {
   const filteredPokemons = usePokemonFilter(pokemons, searchTerm, selectedType);
   const { displayedPokemons, pageCount, setCurrentPage } =
     usePagination(filteredPokemons);
-
-  const [selectedPokemonDetail, setSelectedPokemonDetail] =
-    useState<PokemonData | null>(null);
-
-  const openPokemonDetail = (pokemon: PokemonData) => {
-    setSelectedPokemonDetail(pokemon);
-  };
-
-  const closePokemonDetail = () => setSelectedPokemonDetail(null);
 
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
@@ -53,7 +42,6 @@ const PokemonList = () => {
         <>
           <PokemonGrid
             pokemons={displayedPokemons}
-            onPokemonClick={openPokemonDetail}
           />
           <ReactPaginate
             breakLabel="..."
@@ -71,11 +59,6 @@ const PokemonList = () => {
           />
         </>
       )}
-
-      <PokemonDetailStats
-        pokemon={selectedPokemonDetail}
-        onClose={closePokemonDetail}
-      />
     </div>
   );
 };

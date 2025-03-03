@@ -1,137 +1,33 @@
-import { useEffect, useState } from "react";
-import {
-  fetchPokemons,
-  fetchPokemonDetail,
-  Pokemon,
-  PokemonDetail,
-  PokemonData,
-} from "../../services/pokeApi";
+import { useState } from "react";
+import { PokemonData } from "../../services/pokeApi";
+import useFetchPokemons from "../../hooks/useFetchPokemons";
+import useFetchPokemonTypes from "../../hooks/useFetchPokemonTypes";
+import usePokemonFilter from "../../hooks/usePokemonFilter";
+import usePagination from "../../hooks/usePagination";
 import PokemonTitle from "../organisms/PokemonTitle";
 import PokemonDetailStats from "../organisms/PokemonDetail";
 import PokemonGrid from "../templates/PokemonGrid";
 import ReactPaginate from "react-paginate";
 import Pokeball from "../../assets/pokeball.png";
-const ITEMS_PER_PAGE = 10;
 
 const PokemonList = () => {
-  const [selectedType, setSelectedType] = useState<string>("all");
-  const [pokemonTypes, setPokemonTypes] = useState<string[]>([]);
-  const [pokemons, setPokemons] = useState<PokemonData[]>([]);
-  const [filteredPokemons, setFilteredPokemons] = useState<PokemonData[]>([]);
-  const [displayedPokemons, setDisplayedPokemons] = useState<PokemonData[]>([]);
-  const [pageCount, setPageCount] = useState(0);
-  const [selectedPokemonDetail, setSelectedPokemonDetail] = useState<PokemonData | null>(null);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { pokemons, loading, error } = useFetchPokemons();
+  const pokemonTypes = useFetchPokemonTypes();
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedType, setSelectedType] = useState<string>("all");
 
-  // Membuka detail Pokémon yang dipilih
-const openPokemonDetail = (pokemon: PokemonData) => {
-  setSelectedPokemonDetail(pokemon);
-};
+  const filteredPokemons = usePokemonFilter(pokemons, searchTerm, selectedType);
+  const { displayedPokemons, pageCount, setCurrentPage } =
+    usePagination(filteredPokemons);
 
-  // Menutup detail Pokémon
-  const closePokemonDetail = () => {
-    setSelectedPokemonDetail(null);
+  const [selectedPokemonDetail, setSelectedPokemonDetail] =
+    useState<PokemonData | null>(null);
+
+  const openPokemonDetail = (pokemon: PokemonData) => {
+    setSelectedPokemonDetail(pokemon);
   };
 
-  // Mengambil data Pokémon dari API
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const totalPokemons = 1000;
-      let allPokemons: PokemonData[] = [];
-
-      for (let i = 0; i < totalPokemons; i += 100) {
-        const data = await fetchPokemons(132, i);
-        const detailedPokemons: PokemonData[] = await Promise.all(
-          data.results.map(async (pokemon: Pokemon): Promise<PokemonData> => {
-            const details: PokemonDetail = await fetchPokemonDetail(
-              pokemon.name
-            );
-            return {
-              base_experience: details.base_experience,
-              name: pokemon.name,
-              image: details.sprites.front_default,
-              types: details.types.map((t) => t.type.name),
-              hp:
-                details.stats.find((s) => s.stat.name === "hp")?.base_stat || 0,
-              attack:
-                details.stats.find((s) => s.stat.name === "attack")
-                  ?.base_stat || 0,
-              special_att:
-                details.stats.find((s) => s.stat.name === "special-attack")
-                  ?.base_stat || 0,
-              defense:
-                details.stats.find((s) => s.stat.name === "defense")
-                  ?.base_stat || 0,
-              special_deff:
-                details.stats.find((s) => s.stat.name === "special-defense")
-                  ?.base_stat || 0,
-              abilities: details.abilities.map(
-                (abilities) => abilities.ability.name
-              ),
-              held_items:
-                details.held_items.map((held_items) => held_items.item.name),
-              weight: details.weight,
-              speed:
-                details.stats.find((s) => s.stat.name === "speed")?.base_stat ||
-                0,
-            };
-          })
-        );
-
-        allPokemons = [...allPokemons, ...detailedPokemons];
-        setPokemons(allPokemons);
-        setFilteredPokemons(allPokemons);
-        setPageCount(Math.ceil(allPokemons.length / ITEMS_PER_PAGE));
-      }
-    } catch {
-      setError("Error fetching Pokémon data...");
-    }
-    setLoading(false);
-  };
-
-  // Mengambil type Pokémon dari API
-  const fetchPokemonTypes = async () => {
-    try {
-      const response = await fetch("https://pokeapi.co/api/v2/type/");
-      const data = await response.json();
-      setPokemonTypes(data.results.map((type: PokemonData) => type.name));
-    } catch (error) {
-      console.error("Error fetching Pokémon types:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-    fetchPokemonTypes();
-  }, []);
-
-  // Memfilter Pokémon berdasarkan pencarian dan type yang dipilih
-  useEffect(() => {
-    let filtered = pokemons.filter((pokemon) =>
-      pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    if (selectedType !== "all") {
-      filtered = filtered.filter((pokemon) =>
-        pokemon.types.includes(selectedType)
-      );
-    }
-
-    setFilteredPokemons(filtered);
-    setPageCount(Math.ceil(filtered.length / ITEMS_PER_PAGE));
-    setCurrentPage(0);
-  }, [searchTerm, selectedType, pokemons]);
-
-  // Memperbarui Pokémon yang ditampilkan berdasarkan halaman
-  useEffect(() => {
-    const offset = currentPage * ITEMS_PER_PAGE;
-    setDisplayedPokemons(
-      filteredPokemons.slice(offset, offset + ITEMS_PER_PAGE)
-    );
-  }, [currentPage, filteredPokemons]);
+  const closePokemonDetail = () => setSelectedPokemonDetail(null);
 
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
@@ -144,6 +40,7 @@ const openPokemonDetail = (pokemon: PokemonData) => {
         setSelectedType={setSelectedType}
         pokemonTypes={pokemonTypes}
       />
+
       {loading ? (
         <div className="relative flex justify-center items-center h-40">
           <img
@@ -151,7 +48,6 @@ const openPokemonDetail = (pokemon: PokemonData) => {
             alt="Loading..."
             className="w-20 h-20 animate-smoothBounce"
           />
-          <div className="absolute bottom-2 w-20 h-4 bg-black rounded-full blur-md opacity-30 animate-shadowPulse"></div>
         </div>
       ) : (
         <>
@@ -159,7 +55,6 @@ const openPokemonDetail = (pokemon: PokemonData) => {
             pokemons={displayedPokemons}
             onPokemonClick={openPokemonDetail}
           />
-
           <ReactPaginate
             breakLabel="..."
             nextLabel="Next"

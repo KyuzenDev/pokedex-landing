@@ -6,6 +6,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<PokemonList />} />
+        {/* Membuat pages baru untuk detail pokemon mengambil id pokemonnya */}
       </Routes>
     </BrowserRouter>
   );

@@ -4,6 +4,8 @@ export interface Pokemon {
 }
 
 export interface PokemonDetail {
+  id: string;
+  name: string;
   base_experience: number;
   held_items: { item: { name: string} }[];
   sprites: {
@@ -16,6 +18,7 @@ export interface PokemonDetail {
 }
 
 export interface PokemonData {
+  id: string;
   base_experience: number;
   name: string;
   image: string;

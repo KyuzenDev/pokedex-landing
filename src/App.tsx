@@ -1,14 +1,16 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PokemonList from "./components/pages/PokemonList";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PokemonList from "./components/pages/PokemonList"; // Halaman daftar Pokémon
+import PokemonDetailPage from "./components/pages/PokemonDetailPage"; // Halaman detail Pokémon
 
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<PokemonList />} />
-        {/* Membuat pages baru untuk detail pokemon mengambil id pokemonnya */}
+        <Route path="/pokemon/:id" element={<PokemonDetailPage />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
+
 export default App;

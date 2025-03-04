@@ -7,9 +7,9 @@ const PokemonGrid = ({
   pokemons: PokemonData[];
 }) => (
   <ul className="flex flex-wrap justify-center gap-2">
-    {pokemons.map((pokemon, i) => (
+    {pokemons.map((pokemon) => (
       <PokemonCard
-        key={i}
+        key={pokemon.id}
         pokemon={pokemon}
       />
     ))}

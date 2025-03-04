@@ -18,7 +18,13 @@ const PokemonList = () => {
   const { displayedPokemons, pageCount, setCurrentPage } =
     usePagination(filteredPokemons);
 
-  if (error) return <p className="text-center text-red-500">{error}</p>;
+  if (error) {
+    return (
+      <div className="fixed inset-0 flex flex-col justify-center items-center bg-gray-100">
+        <p className="text-red-500 text-lg font-semibold">{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="pokemon-wrapper py-5 px-10 flex flex-col gap-5 items-center">
@@ -40,9 +46,7 @@ const PokemonList = () => {
         </div>
       ) : (
         <>
-          <PokemonGrid
-            pokemons={displayedPokemons}
-          />
+          <PokemonGrid pokemons={displayedPokemons} />
           <ReactPaginate
             breakLabel="..."
             nextLabel="Next"

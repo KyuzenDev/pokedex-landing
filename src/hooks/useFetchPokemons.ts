@@ -4,7 +4,7 @@ import { Pokemon, PokemonDetail, PokemonData } from "../services/pokeApi";
 
 const API = import.meta.env.VITE_API_URL;
 
-const useFetchPokemons = (limit = 1320, loadPages = 131) => {
+const useFetchPokemons = (limit = 1320, loadPages = 50) => {
   const [pokemons, setPokemons] = useState<PokemonData[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,6 +27,7 @@ const useFetchPokemons = (limit = 1320, loadPages = 131) => {
             const details: PokemonDetail = response.data;
 
             return {
+              id: details.id,
               base_experience: details.base_experience,
               name: pokemon.name,
               image: details.sprites.front_default,
@@ -37,7 +38,9 @@ const useFetchPokemons = (limit = 1320, loadPages = 131) => {
               defense: getStatValue(details.stats, "defense"),
               special_deff: getStatValue(details.stats, "special-defense"),
               speed: getStatValue(details.stats, "speed"),
-              abilities: details.abilities.map((ability) => ability.ability.name),
+              abilities: details.abilities.map(
+                (ability) => ability.ability.name
+              ),
               held_items: details.held_items.map((item) => item.item.name),
               weight: details.weight,
             };
